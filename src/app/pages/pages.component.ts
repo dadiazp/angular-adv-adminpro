@@ -15,7 +15,9 @@ export class PagesComponent implements OnInit {
   constructor(private settingsService: SettingsService) { }
 
   ngOnInit(): void {
-    customInitFunctions();
+    //De esta forma se repara un pequeño bug que se tenía al iniciar el tema, pero no funciona
+    //Ver en el video 68 del curso
+    //customInitFunctions();
   }
 
 }

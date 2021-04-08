@@ -11,6 +11,8 @@ import { ProgressComponent } from './progress/progress.component';
 import { Grafica1Component } from './grafica1/grafica1.component';
 import { PagesComponent } from './pages.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { PromesaComponent } from './promesa/promesa.component';
+import { RxjsComponent } from './rxjs/rxjs.component';
 
 
 @NgModule({
@@ -20,13 +22,16 @@ import { AccountSettingsComponent } from './account-settings/account-settings.co
     Grafica1Component,
     PagesComponent,
     AccountSettingsComponent,
+    PromesaComponent,
+    RxjsComponent,
   ],
   exports: [  //Exporto todo estos componentes para que tambien puedan ser usados fuera de este modulo
     DashboardComponent,
     ProgressComponent,
     Grafica1Component,
     PagesComponent,
-    AccountSettingsComponent
+    AccountSettingsComponent,
+    PromesaComponent
   ],
   imports: [
     CommonModule,  //Modulo que me da acceso a directivas como Ngif y NgFor
