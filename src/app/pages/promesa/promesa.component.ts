@@ -56,7 +56,7 @@ export class PromesaComponent implements OnInit {
     return new Promise( resolve => {
         
       fetch('https://reqres.in/api/users')
-      .then(resp => resp.json())
+      .then(resp => resp.json()) // Este primer them me transforma la resp en un json porque antes devolvia un ReadableStream
       .then(body => resolve(body.data));
 
     });
