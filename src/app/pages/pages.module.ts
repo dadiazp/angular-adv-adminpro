@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedModule } from '../shared/shared.module';
 import { ComponentsModule } from '../components/components.module';
@@ -13,6 +13,7 @@ import { PagesComponent } from './pages.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesaComponent } from './promesa/promesa.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { PerfilComponent } from './perfil/perfil.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { RxjsComponent } from './rxjs/rxjs.component';
     AccountSettingsComponent,
     PromesaComponent,
     RxjsComponent,
+    PerfilComponent,
   ],
   exports: [  //Exporto todo estos componentes para que tambien puedan ser usados fuera de este modulo
     DashboardComponent,
@@ -38,6 +40,7 @@ import { RxjsComponent } from './rxjs/rxjs.component';
     FormsModule,    //Este es el modulo de forms reactivos, sin esto el ngModel no funciona
     SharedModule,  //Modulo que me da acceso a los componentes compartidos (Header, Breadcrumbs, Sidebar, etc)
     RouterModule,  //Solo importo este para activar el router-outlet, no es necesario importar el AppRoutingModule
+    ReactiveFormsModule, //Formularios reactivos, esto me permite usar el FormBuilder
     ComponentsModule
   ]
 })

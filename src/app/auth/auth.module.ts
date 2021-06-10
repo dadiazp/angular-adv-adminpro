@@ -22,7 +22,7 @@ import { RegisterComponent } from './register/register.component';
     CommonModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule, //Formularios reactivos, esto me permite usar el FormBuilder
     HttpClientModule
   ]
 })
