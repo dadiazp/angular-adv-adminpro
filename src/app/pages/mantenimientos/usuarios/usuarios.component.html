@@ -1,0 +1,79 @@
+<div class="row animated fadeIn fast">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <!-- #termino es una referencia local a este input para luego usar el evento keyup y llamar a la funcion-->
+                <input type="text" class="form-control" placeholder="Buscar usuario..." #termino (keyup)="buscarTermino(termino.value)"/>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="cargando" class="row animated fadeIn fast">
+    <div class="col-12">
+        <div class="alert alert-success text-center">
+            <h4 class="alert-heading">Cargando</h4>
+            <i class="fa fa-spin fa-refresh fa-2x"></i>
+            <p class="mb-0">Por favor espere</p>
+        </div>    
+    </div>
+</div>
+
+<div *ngIf="!cargando" class="row animated fadeIn fast">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Total de usuarios ({{totalUsuarios}}) - {{desde}}</h4>
+                <h6 class="card-subtitle">Usuarios registrados en la aplicación</h6>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="w100">Avatar</th>
+                                <th>Correo</th>
+                                <th>Nombre</th>
+                                <th class="w140">Rol</th>
+                                <th class="w100">Auth</th>
+                                <th class="text-nowrap w100">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let usuario of usuarios">
+                                <td class="text-center">
+                                    <img [src]="usuario.imagenUrl" alt="Avatar de usuario"class="avatar cursor" (click)="abrirModal(usuario)">
+                                </td>
+                                <td>{{usuario.email}}</td>
+                                <td>{{usuario.nombre}}</td>
+                                <td>
+                                    <!-- El ngModel es para que el valor predeterminado del select sea efectivamente el rol del user-->
+                                    <!-- el evento change invoca una funcion cambiarRole cuando cambia la opcion de un select -->
+                                    <select class="form-control" [(ngModel)] = "usuario.role" (change) = "cambiarRole(usuario)">
+                                        <option value="ADMIN_ROLE">Admin</option>
+                                        <option value="USER_ROLE">User</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <span *ngIf="usuario.google" class="label label-danger">Google</span>
+                                    <span *ngIf="!usuario.google" class="label label-info">Email</span>
+                                </td>
+
+                                <td class="text-nowrap text-center">
+                                    <!-- Se envia el usuario que está anteriormente en el for -->
+                                    <a data-toggle="tooltip" class="cursor" data-original-title="Borrar" (click)="eliminarUsuario(usuario)"> 
+                                        <i class="fa fa-close text-danger"></i> 
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="termino.value.length === 0">
+                    <button (click)="cambiarPagina(-5)" class="btn btn-secondary mr-2">Anterior</button>
+                    <button (click)="cambiarPagina(5)" class="btn btn-secondary">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

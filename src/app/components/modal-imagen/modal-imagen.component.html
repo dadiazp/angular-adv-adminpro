@@ -1,0 +1,44 @@
+<!-- Este div es el encargado de mostrar el fondo y activar y desactivar el modal-->
+<!-- El id me sirve para darle estilos al fondo debajo del modal -->
+<!-- La clase oculto me sirve  para abrir y cerrar el modal-->
+<!-- class.oculto me permite activar la clase oculto si se cumple la condicion de que mostrarModal es true -->
+
+<!-- Uso el servicio del modal acá debido a que es un singleton, por lo que esta propiedad es unica en las distintas pages de la app -->
+<!-- Es decir, se maneja una misma propiedad en toda la app, es más fácil de este modo, de lo contrario se tiene que usar observable -->
+<div id="fondo-modal-imagen" class="animated fadeIn fast" [class.oculto]="modalService.ocultarModal">
+    <div class="modal fade show"
+    id="exampleModal"
+    tabindex="-1"
+    role="dialog"
+    style="display: block; padding-right: 17px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel1">Cargar imagen</h4>
+                    <button type="button"  
+                            class="close" 
+                            data-dismiss="modal" 
+                            aria-label="Close"
+                            (click)="cerrarModal()">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                <h3>Seleccione una imagen</h3>
+                <div class="text-center">
+                    <!-- De este modo, si cambio la imagen la previsualizacion cambiará -->
+                    <img *ngIf="!imgTemp" [src]="modalService.img" class="img-avatar">
+                    <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+                </div>
+                <input type="file" (change) = "cambiarImagen($event.target.files[0])">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="cerrarModal()" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" (click)="subirImagen()" class="btn btn-primary">Cargar imagen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

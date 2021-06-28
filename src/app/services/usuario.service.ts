@@ -39,6 +39,14 @@ export class UsuarioService {
     return this.usuario.uid || '';
   }
 
+  get getHeaders(){
+    return {
+      headers: {
+      'x-token': this.token
+      }
+    }
+  }
+
   googleInit(){
 
     return new Promise<void>(resolve =>{
@@ -109,18 +117,14 @@ export class UsuarioService {
   }
 
   actualizarUsuario(data: {nombre:string, email:string, role:string}){
-    
+
     //Data será lo que está dentro de data y ademas se añade role
     data = {
       ...data,
       role: this.usuario.role
     };
 
-    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, {
-      headers: {
-      'x-token': this.token
-      }
-    })
+    return this.http.put(`${base_url}/usuarios/${this.uid}`, data, this.getHeaders);
 
   }
 
@@ -145,6 +149,53 @@ export class UsuarioService {
                    localStorage.setItem('token', resp.token);
                  })
                ); 
+
+  }
+
+  cargarUsuarios(desde: number = 0){
+
+    const url = `${base_url}/usuarios?desde=${desde}`;
+
+    //A continuacion indico que el observable del get devolverá un objeto con esa informacion
+    //Esto es necesario ya que en el usuario.component.ts al llamar este metodo puedo desestructurar sin problema
+    //De lo contrario, dará error
+    //También se puede colocar que el observable retorna any y ya está
+    //O también podría crear una interface
+    return this.http.get<{total: number, usuarios: Usuario[]}>(url, this.getHeaders)
+    //A continuacion se realizó todo esto debido a que para mostrar la imagen debo invocar el getter getImage
+    //Pero como este observable no devuelve una instancia de usuario no puedo acceder a ese getter
+    //Por tanto se hizo esto
+                .pipe(
+                  map(resp => {
+
+                    const usuarios = resp.usuarios.map(
+                      user => new Usuario(user.nombre, user.email, '', user.img, user.google, user.role, user.uid)
+                    );
+
+                    //Se debe retornar de esta forma, de lo contrario se pierde la estructura declarada anteriormente
+                    //Si no coloco ningun return tambien dará error
+                    return{
+                      total: resp.total,
+                      usuarios
+                    };            
+
+                  })
+                );
+
+  }
+
+  eliminarUsuario(usuario: Usuario){
+    
+    const url = `${base_url}/usuarios/${usuario.uid}`;
+
+    return this.http.delete(url, this.getHeaders)
+
+  }
+
+  //Metodo para actualizar un usuario desde la tabla de CRUD de usuarios
+  guardarUsuario(usuario: Usuario){
+  
+    return this.http.put(`${base_url}/usuarios/${usuario.uid}`, usuario, this.getHeaders);
 
   }
 
