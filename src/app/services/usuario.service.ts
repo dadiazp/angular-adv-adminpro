@@ -35,6 +35,10 @@ export class UsuarioService {
     return localStorage.getItem('token') || '';
   }
 
+  get role():string{
+    return this.usuario.role
+  }
+
   get uid():string{
     return this.usuario.uid || '';
   }
@@ -64,9 +68,16 @@ export class UsuarioService {
     
   }
 
+  guardarLocalStorage(token: string, menu: any){
+      localStorage.setItem('token', token);
+      //Recuerda que en el localstorage solo se pueden guardar strings, la variable menu no lo es, por eso lo paso por el stringify
+      localStorage.setItem('menu', JSON.stringify(menu));
+  }
+
   logout(){
 
-    localStorage.removeItem('token')
+    localStorage.removeItem('token');
+    localStorage.removeItem('menu');
 
     /** SignOut de Google**/
     this.auth2.signOut().then( () => {
@@ -95,7 +106,8 @@ export class UsuarioService {
         const {email, google, nombre, role, img = '', uid} = resp.usuario;
         this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
 
-        localStorage.setItem('token', resp.token);
+        this.guardarLocalStorage(resp.token, resp.menu)
+
         return true;
       }),
       //El catchError me atrapa los errores que ocurran en el flujo anterior
@@ -110,7 +122,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/usuarios`, formData)
                 .pipe(
                   tap((resp: any) => {
-                    localStorage.setItem('token', resp.token);
+                    this.guardarLocalStorage(resp.token, resp.menu)
                   })
                 );
 
@@ -134,7 +146,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login`, formData)
                .pipe(
                  tap((resp: any) => {
-                   localStorage.setItem('token', resp.token);
+                  this.guardarLocalStorage(resp.token, resp.menu)
                  })
                ); 
 
@@ -146,7 +158,7 @@ export class UsuarioService {
     return this.http.post(`${base_url}/login/google`, {token})
                .pipe(
                  tap((resp: any) => {
-                   localStorage.setItem('token', resp.token);
+                  this.guardarLocalStorage(resp.token, resp.menu)
                  })
                ); 
 
